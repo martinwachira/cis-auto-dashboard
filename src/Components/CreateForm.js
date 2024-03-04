@@ -11,6 +11,9 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
+import CircularProgress from "@mui/material/CircularProgress";
 import CreateSubsService from "../CreateSubsService.js";
 
 const secondaryColor = "#FFFFFF";
@@ -25,6 +28,7 @@ const SafaricomForm = () => {
     endPoint: "",
   });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -33,6 +37,7 @@ const SafaricomForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setMessage("");
+    setLoading(true); //start loading
     CreateSubsService.create(
       formData.login,
       formData.password,
@@ -43,6 +48,7 @@ const SafaricomForm = () => {
     ).then(
       (response) => {
         setMessage(response.data.message);
+        setLoading(false); //stop on promise resolve
       },
       (error) => {
         const resMessage =
@@ -53,20 +59,27 @@ const SafaricomForm = () => {
           error.toString();
 
         setMessage(resMessage);
+        setLoading(false); //stop on promise reject
       }
     );
-    // console.log("Form submitted:", formData);
   };
 
   return (
     <Container>
       <Paper style={{ borderRadius: "3rem" }}>
         <CardContent>
+          {message ? (
+            <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+              {message}
+            </Alert>
+          ) : (
+            ""
+          )}
           <form onSubmit={handleSubmit} className="form-content">
             <Typography variant="h5" style={{ color: "#3cb553" }}>
               <strong>DASHBOARD TO CREATE CIRCUIT IDS</strong> <br />
               <span style={{ color: "grey", fontSize: "small" }}>
-                use your encrypted credentials
+                use your encrypted credentials (password)
               </span>
             </Typography>
             <div className="ranges">
@@ -151,7 +164,7 @@ const SafaricomForm = () => {
               />
             </FormControl>
             <br />
-            {message}
+            {/* {message} */}
             <Button
               type="submit"
               variant="contained"
@@ -161,7 +174,11 @@ const SafaricomForm = () => {
                 borderRadius: "1rem",
               }}
             >
-              Create the CIs
+              {loading ? (
+                <CircularProgress color="success" />
+              ) : (
+                "Create the CIs"
+              )}
             </Button>
           </form>
         </CardContent>
