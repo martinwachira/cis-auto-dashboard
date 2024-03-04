@@ -21,8 +21,8 @@ const SafaricomForm = () => {
     password: "",
     startRange: "",
     endRange: "",
-    urlEndPoint: "",
     offeringId: "",
+    endPoint: "",
   });
   const [message, setMessage] = useState("");
 
@@ -39,11 +39,10 @@ const SafaricomForm = () => {
       formData.startRange,
       formData.endRange,
       formData.offeringId,
-      formData.urlEndPoint
+      formData.endPoint
     ).then(
       (response) => {
         setMessage(response.data.message);
-        console.log("response", response);
       },
       (error) => {
         const resMessage =
@@ -56,7 +55,7 @@ const SafaricomForm = () => {
         setMessage(resMessage);
       }
     );
-    console.log("Form submitted:", formData);
+    // console.log("Form submitted:", formData);
   };
 
   return (
@@ -141,8 +140,8 @@ const SafaricomForm = () => {
 
             <FormControl fullWidth margin="normal">
               <TextField
-                id="urlEndPoint"
-                name="urlEndPoint"
+                id="endPoint"
+                name="endPoint"
                 label="Endpoint URL"
                 value={formData.endPoint}
                 onChange={handleChange}
