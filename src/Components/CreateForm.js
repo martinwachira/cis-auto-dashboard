@@ -69,12 +69,17 @@ const SafaricomForm = () => {
       <Paper style={{ borderRadius: "3rem" }}>
         <CardContent>
           {message ? (
-            <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+            <Alert
+              icon={<CheckIcon fontSize="inherit" />}
+              severity="success"
+              style={{ borderRadius: "3rem" }}
+            >
               {message}
             </Alert>
           ) : (
             ""
           )}
+
           <form onSubmit={handleSubmit} className="form-content">
             <Typography variant="h5" style={{ color: "#3cb553" }}>
               <strong>DASHBOARD TO CREATE CIRCUIT IDS</strong> <br />
