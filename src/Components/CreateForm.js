@@ -25,6 +25,7 @@ const SafaricomForm = () => {
     startRange: "",
     endRange: "",
     offeringId: "",
+    BillCycleType: "",
     endPoint: "",
   });
   const [message, setMessage] = useState("");
@@ -44,6 +45,7 @@ const SafaricomForm = () => {
       formData.startRange,
       formData.endRange,
       formData.offeringId,
+      formData.BillCycleType,
       formData.endPoint
     ).then(
       (response) => {
@@ -143,18 +145,33 @@ const SafaricomForm = () => {
               </FormControl>
             </div>
 
-            <FormControl fullWidth margin="normal">
-              <TextField
-                id="offeringId"
-                name="offeringId"
-                label="Offering ID"
-                value={formData.offeringId}
-                onChange={handleChange}
-                required
-                style={{ backgroundColor: secondaryColor }}
-                variant="standard"
-              />
-            </FormControl>
+            <div className="ranges">
+              <FormControl fullWidth margin="normal">
+                <TextField
+                  id="offeringId"
+                  name="offeringId"
+                  label="Offering ID"
+                  value={formData.offeringId}
+                  onChange={handleChange}
+                  required
+                  style={{ backgroundColor: secondaryColor }}
+                  variant="standard"
+                />
+              </FormControl>
+              &nbsp;&nbsp;
+              <FormControl fullWidth margin="normal">
+                <TextField
+                  id="BillCycleType"
+                  name="BillCycleType"
+                  label="Bill Cycle Type"
+                  value={formData.BillCycleType}
+                  onChange={handleChange}
+                  required
+                  style={{ backgroundColor: secondaryColor }}
+                  variant="standard"
+                />
+              </FormControl>
+            </div>
 
             <FormControl fullWidth margin="normal">
               <TextField
