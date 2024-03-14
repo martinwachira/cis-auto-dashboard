@@ -25,7 +25,7 @@ const SafaricomForm = () => {
     startRange: "",
     endRange: "",
     offeringId: "",
-    BillCycleType: "",
+    BillCycleType: "01",
     endPoint: "",
   });
   const [message, setMessage] = useState("");
@@ -163,10 +163,9 @@ const SafaricomForm = () => {
                 <TextField
                   id="BillCycleType"
                   name="BillCycleType"
-                  label="Bill Cycle Type"
+                  label="Bill Cycle Type (picks 01 by default)"
                   value={formData.BillCycleType}
                   onChange={handleChange}
-                  required
                   style={{ backgroundColor: secondaryColor }}
                   variant="standard"
                 />
