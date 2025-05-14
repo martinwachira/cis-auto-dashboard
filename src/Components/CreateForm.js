@@ -1,5 +1,6 @@
 import "../App.css";
 
+import { Alert, LinearProgress } from "@mui/material";
 import {
   Button,
   CardContent,
@@ -9,12 +10,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
 import CircularProgress from "@mui/material/CircularProgress";
 import CreateSubsService from "../CreateSubsService.js";
+import ErrorIcon from "@mui/icons-material/Error";
 
 const secondaryColor = "#FFFFFF";
 
@@ -28,8 +29,10 @@ const SafaricomForm = () => {
     BillCycleType: "01",
     endPoint: "",
   });
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [succMessage, setSuccMessage] = useState("");
+  const [errMessage, setErrMessage] = useState("");
+  const [showProgress, setShowProgress] = useState(false);
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -37,7 +40,7 @@ const SafaricomForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setMessage("");
+    setSuccMessage("");
     setLoading(true); //start loading
     CreateSubsService.create(
       formData.login,
@@ -49,34 +52,71 @@ const SafaricomForm = () => {
       formData.endPoint
     ).then(
       (response) => {
-        setMessage(response.data.message);
+        setSuccMessage(response.data.succMessage);
         setLoading(false); //stop on promise resolve
       },
       (error) => {
         const resMessage =
           (error.response &&
             error.response.data &&
-            error.response.data.message) ||
-          error.message ||
+            error.response.data.errMessage) ||
+          error.errMessage ||
           error.toString();
 
-        setMessage(resMessage);
+        setErrMessage(resMessage);
         setLoading(false); //stop on promise reject
       }
     );
   };
 
+  useEffect(() => {
+    if (succMessage || errMessage) {
+      const timer = setTimeout(() => {
+        setSuccMessage("");
+        setErrMessage("");
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [succMessage, errMessage]);
+
+  useEffect(() => {
+    if (succMessage || errMessage) {
+      setShowProgress(true);
+      const timer = setTimeout(() => {
+        setSuccMessage("");
+        setErrMessage("");
+        setShowProgress(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [succMessage, errMessage]);
+
   return (
     <Container>
       <Paper style={{ borderRadius: "3rem" }}>
         <CardContent>
-          {message ? (
+          {succMessage ? (
             <Alert
               icon={<CheckIcon fontSize="inherit" />}
               severity="success"
               style={{ borderRadius: "3rem" }}
             >
-              {message}
+              {succMessage}
+              {showProgress && <LinearProgress color="success" />}
+            </Alert>
+          ) : (
+            ""
+          )}
+          {errMessage ? (
+            <Alert
+              icon={<ErrorIcon color="error" />}
+              severity="error"
+              style={{ borderRadius: "3rem" }}
+            >
+              {errMessage}
+              {showProgress && <LinearProgress color="error" />}
             </Alert>
           ) : (
             ""

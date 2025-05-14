@@ -7,7 +7,7 @@ const PageHeader = () => {
   return (
     <>
       <header className="App-header">
-        <img src={logo} alt="logo" />
+        <img width="300px" src={logo} alt="logo" />
       </header>
     </>
   );
