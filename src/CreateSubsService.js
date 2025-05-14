@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/";
+const API_URL = ProcessingInstruction.env.API_URL;
+
 const CreateSubsService = {
   create: (
     login,
