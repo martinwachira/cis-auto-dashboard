@@ -79,7 +79,6 @@ const SafaricomForm = () => {
       return () => clearTimeout(timer);
     }
   }, [succMessage, errMessage]);
-
   useEffect(() => {
     if (succMessage || errMessage) {
       setShowProgress(true);
@@ -92,7 +91,6 @@ const SafaricomForm = () => {
       return () => clearTimeout(timer);
     }
   }, [succMessage, errMessage]);
-
   return (
     <Container>
       <Paper style={{ borderRadius: "3rem" }}>

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = process.env.API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
 const CreateSubsService = {
   create: (
@@ -22,6 +22,7 @@ const CreateSubsService = {
       BillCycleType: parseInt(BillCycleType),
       endPoint,
     });
+    console.log("api url", API_URL);
 
     return axios.post(API_URL + "create-cis", {
       login,
