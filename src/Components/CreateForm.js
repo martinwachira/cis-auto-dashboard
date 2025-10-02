@@ -256,11 +256,12 @@ const SafaricomForm = () => {
             {/* {message} */}
             <Button
               type="submit"
-              variant="contained"
+              variant="outlined"
               style={{
                 marginTop: 20,
-                backgroundColor: "#ee454a",
+                color: "#ee454a",
                 borderRadius: "1rem",
+                fontWeight: "bold",
               }}
             >
               {loading ? <CircularProgress color="success" /> : "Create CIs"}
