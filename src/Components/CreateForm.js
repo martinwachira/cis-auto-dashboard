@@ -271,24 +271,34 @@ const SafaricomForm = () => {
               )}
             </Button>
             {logFile && (
-              <Paper
-                style={{
-                  marginTop: "10px",
-                  padding: "1rem",
-                  backgroundColor: "#000",
-                  color: "#0f0",
-                  borderRadius: "1rem",
-                  maxHeight: "400px",
-                  overflowY: "auto",
-                  fontFamily: "monospace",
-                  fontSize: "0.85rem",
-                }}
-              >
-                <Typography variant="subtitle2" style={{ color: "#3cb553" }}>
-                  Logs ({logFile})
-                </Typography>
-                <pre>{logs || "Fetching logs..."}</pre>
-              </Paper>
+              <div style={{ marginTop: "10px" }}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => CreateSubsService.downloadLogs(logFile)}
+                  style={{ marginBottom: "10px" }}
+                >
+                  Download Log File
+                </Button>
+
+                <Paper
+                  style={{
+                    padding: "1rem",
+                    backgroundColor: "#000",
+                    color: "#0f0",
+                    borderRadius: "1rem",
+                    maxHeight: "400px",
+                    overflowY: "auto",
+                    fontFamily: "monospace",
+                    fontSize: "0.85rem",
+                  }}
+                >
+                  <Typography variant="subtitle2" style={{ color: "#3cb553" }}>
+                    Logs ({logFile})
+                  </Typography>
+                  <pre>{logs || "Fetching logs..."}</pre>
+                </Paper>
+              </div>
             )}
           </form>
         </CardContent>
