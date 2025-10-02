@@ -4,7 +4,7 @@
 }
 
 .App-header {
-  min-height: 20vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,7 +15,7 @@
 }
 
 .form-content {
-  padding: 7rem;
+  padding: 5rem;
   color: #3cb553;
 }
 

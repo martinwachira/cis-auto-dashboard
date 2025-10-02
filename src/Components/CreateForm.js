@@ -138,7 +138,6 @@ const SafaricomForm = () => {
           ) : (
             ""
           )}
-
           <form onSubmit={handleSubmit} className="form-content">
             <Typography variant="h5" style={{ color: "#3cb553" }}>
               <strong>DASHBOARD TO CREATE CIRCUIT IDS</strong> <br />
@@ -264,11 +263,7 @@ const SafaricomForm = () => {
                 borderRadius: "1rem",
               }}
             >
-              {loading ? (
-                <CircularProgress color="success" />
-              ) : (
-                "Create the CIs"
-              )}
+              {loading ? <CircularProgress color="success" /> : "Create CIs"}
             </Button>
             {logFile && (
               <div style={{ marginTop: "10px" }}>
