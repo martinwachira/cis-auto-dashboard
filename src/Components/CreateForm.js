@@ -28,11 +28,14 @@ const SafaricomForm = () => {
     offeringId: "",
     BillCycleType: "01",
     endPoint: "",
+    numWorkers: "50",
   });
   const [loading, setLoading] = useState(false);
   const [succMessage, setSuccMessage] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const [showProgress, setShowProgress] = useState(false);
+  const [logs, setLogs] = useState("");
+  const [logFile, setLogFile] = useState("");
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -41,7 +44,10 @@ const SafaricomForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setSuccMessage("");
+    setErrMessage("");
+    setLogs(""); // reset logs before new run
     setLoading(true); //start loading
+
     CreateSubsService.create(
       formData.login,
       formData.password,
@@ -49,11 +55,24 @@ const SafaricomForm = () => {
       formData.endRange,
       formData.offeringId,
       formData.BillCycleType,
-      formData.endPoint
+      formData.endPoint,
+      formData.numWorkers
     ).then(
       (response) => {
-        setSuccMessage(response.data.succMessage);
+        console.log("Create response:", response.data);
+        setSuccMessage(
+          response.data.succMessage || "Request submitted successfully"
+        );
+        setLogFile(response.data.logFile);
         setLoading(false); //stop on promise resolve
+
+        // Immediately fetch logs once
+        // if (response.data.logFile) {
+        //   CreateSubsService.getLogs(response.data.logFile).then((logRes) => {
+        //     setLogs(logRes.data);
+        //   });
+        // }
+        // setLoading(false);
       },
       (error) => {
         const resMessage =
@@ -71,16 +90,6 @@ const SafaricomForm = () => {
 
   useEffect(() => {
     if (succMessage || errMessage) {
-      const timer = setTimeout(() => {
-        setSuccMessage("");
-        setErrMessage("");
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [succMessage, errMessage]);
-  useEffect(() => {
-    if (succMessage || errMessage) {
       setShowProgress(true);
       const timer = setTimeout(() => {
         setSuccMessage("");
@@ -91,11 +100,23 @@ const SafaricomForm = () => {
       return () => clearTimeout(timer);
     }
   }, [succMessage, errMessage]);
+  useEffect(() => {
+    if (!logFile) return;
+
+    const interval = setInterval(() => {
+      CreateSubsService.getLogs(logFile).then((logRes) => {
+        setLogs(logRes.data);
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [logFile]);
+
   return (
     <Container>
       <Paper style={{ borderRadius: "3rem" }}>
         <CardContent>
-          {succMessage ? (
+          {succMessage && (
             <Alert
               icon={<CheckIcon fontSize="inherit" />}
               severity="success"
@@ -104,8 +125,6 @@ const SafaricomForm = () => {
               {succMessage}
               {showProgress && <LinearProgress color="success" />}
             </Alert>
-          ) : (
-            ""
           )}
           {errMessage ? (
             <Alert
@@ -212,9 +231,9 @@ const SafaricomForm = () => {
               <FormControl fullWidth margin="normal">
                 <TextField
                   id="numWorkers"
-                  name="Num Of Workers"
+                  name="numWorkers"
                   label="Number of Workers"
-                  value="50"
+                  value={formData.numWorkers}
                   onChange={handleChange}
                   style={{ backgroundColor: secondaryColor }}
                   variant="standard"
@@ -251,6 +270,26 @@ const SafaricomForm = () => {
                 "Create the CIs"
               )}
             </Button>
+            {logFile && (
+              <Paper
+                style={{
+                  marginTop: "10px",
+                  padding: "1rem",
+                  backgroundColor: "#000",
+                  color: "#0f0",
+                  borderRadius: "1rem",
+                  maxHeight: "400px",
+                  overflowY: "auto",
+                  fontFamily: "monospace",
+                  fontSize: "0.85rem",
+                }}
+              >
+                <Typography variant="subtitle2" style={{ color: "#3cb553" }}>
+                  Logs ({logFile})
+                </Typography>
+                <pre>{logs || "Fetching logs..."}</pre>
+              </Paper>
+            )}
           </form>
         </CardContent>
       </Paper>

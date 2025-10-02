@@ -10,6 +10,7 @@ const CreateSubsService = {
     endRange,
     offeringId,
     BillCycleType,
+    // numWorkers,
     endPoint
   ) => {
     // Log the form data
@@ -20,6 +21,7 @@ const CreateSubsService = {
       endRange: parseInt(endRange),
       offeringId: parseInt(offeringId),
       BillCycleType: parseInt(BillCycleType),
+      // numWorkers: parseInt(numWorkers) || 50, // fallback default
       endPoint,
     });
     console.log("api url", API_URL);
@@ -31,7 +33,17 @@ const CreateSubsService = {
       endRange: parseInt(endRange),
       offeringId: parseInt(offeringId),
       BillCycleType: parseInt(BillCycleType),
+      // numWorkers: parseInt(numWorkers) || 50, // fallback default
       endPoint,
+    });
+  },
+  // fetch logs
+  getLogs: (fileName) => {
+    console.log(fileName);
+
+    return axios.get(API_URL + "logs", {
+      params: { file: fileName },
+      responseType: "text", // because logs are plain text
     });
   },
 };
