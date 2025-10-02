@@ -208,6 +208,18 @@ const SafaricomForm = () => {
                   variant="standard"
                 />
               </FormControl>
+              &nbsp;&nbsp;
+              <FormControl fullWidth margin="normal">
+                <TextField
+                  id="numWorkers"
+                  name="Num Of Workers"
+                  label="Number of Workers"
+                  value="50"
+                  onChange={handleChange}
+                  style={{ backgroundColor: secondaryColor }}
+                  variant="standard"
+                />
+              </FormControl>
             </div>
 
             <FormControl fullWidth margin="normal">
